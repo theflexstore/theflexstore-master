@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+#  - "0.8"
+  - "0.10"
+  - "0.12"
+  - "4.2"
+  - "4.4"
+  - "5.11"
+  - "6.1"
+  - "node"
+
+before_install:
+  - "if [[ `node -v` == v0.8.* ]]; then npm install -g npm || exit 0; fi"
+
+script:
+  - npm run lint
+  - npm run coverage
+  - npm run buildertest
+  - npm run browsertest
+  - node ./node_modules/.bin/codecov
+
+sudo: false
