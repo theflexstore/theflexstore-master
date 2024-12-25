@@ -1,0 +1,41 @@
+language: node_js
+node_js:
+#  - "0.8"
+  - "0.10"
+
+before_install:
+  - "if [[ `node -v` == v0.8.* ]]; then npm install -g npm || exit 0; fi"
+
+script:
+  - "if [ \"$BROWSER\" ]; then npm run browsertest; else npm test; fi"
+  - "if [ -f coverage/lcov.info ]; then cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi"
+
+env:
+  matrix:
+    - COVERAGE=1
+    - BROWSER="chrome"
+    - BROWSER="chrome:28"
+    - BROWSER="firefox"
+    - BROWSER="firefox:23:windows 7"
+    - BROWSER="internet explorer:10"
+    - BROWSER="internet explorer:11"
+    - BROWSER="safari:5"
+    - BROWSER="safari:6"
+    - BROWSER="safari:7"
+    - BROWSER="android"
+    - BROWSER="android:4.3"
+    - BROWSER="iphone"
+
+addons:
+  sauce_connect:
+    username:
+      secure: "WGnZ9cBj/cdS3l+a614M202OtEdeapA4ocOu9p0RsaR4xhS45A6L7NV/qyjnnBKKpncNhAXBKqQeFmujmQzjToDffyVgn6JzIyD3SdAtIVwyRd7PQVYVdJJrb+ZL4VEM+BN94vh7HSZakxiDsF7VONawTkJO1qD8IlBDdoDdZBs="
+    access_key:
+      secure: "L/H2unQ0/mlKcUqEd4zokJP0a+M33QPu8WtIRWnpSGggR7dNiGfGEdI5j/kAUrVwOzIBnwmDLQS2vn++WEz/+agG3YNudu55ut3HNYlXkXtGrpA/mz9jHo9NYeL12XX2A1o/SsxzjcVUxWq7M/MjO014VkICn8IgSMru1rAOHhk="
+
+# env:
+#   global:
+#     - secure: "..."
+#   matrix:
+#     - UNIT=1
+#     - AWS_REGION=us-east-1 INTEGRATION=1
