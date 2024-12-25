@@ -1,0 +1,21 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "Buffer": true,
+    "escape": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "strict": 0,
+    "curly": 0,
+    "no-underscore-dangle": 0,
+    "new-cap": 0,
+    "dot-notation": 0,
+    "no-use-before-define": 0,
+    "space-after-keywords": [2, "always"],
+    "no-trailing-spaces": 2
+  }
+}
