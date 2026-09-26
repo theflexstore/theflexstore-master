@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Launch Gate Evidence Board</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Sans:wght@400;500;600;700&display=swap');
+
+    :root {
+      color-scheme: light dark;
+      --bg: #f2f5f4;
+      --surface: #ffffff;
+      --surface-2: #e8eeec;
+      --ink: #14201d;
+      --muted: #53635f;
+      --line: #cbd5d2;
+      --line-strong: #aab8b4;
+      --navy: #173a45;
+      --teal: #0f6b62;
+      --green: #17683d;
+      --green-bg: #dff3e8;
+      --amber: #835405;
+      --amber-bg: #ffedc4;
+      --rule: #c9362d;
+      --rule-bg: #fff0ee;
+      --shadow: 0 12px 32px rgba(22, 42, 36, .08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1715;
+        --surface: #17211f;
+        --surface-2: #1e2b28;
+        --ink: #eef6f3;
+        --muted: #afbfba;
+        --line: #35443f;
+        --line-strong: #4e625c;
+        --navy: #b5dce4;
+        --teal: #77cfc0;
+        --green: #8fe0ad;
+        --green-bg: #173c29;
+        --amber: #ffd276;
+        --amber-bg: #493712;
+        --rule: #ff8a7f;
+        --rule-bg: #3b201f;
+        --shadow: 0 12px 32px rgba(0, 0, 0, .2);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 40px,
+        var(--bg);
+      color: var(--ink);
+      font-family: "IBM Sans", ui-sans-serif, sans-serif;
+      line-height: 1.5;
+    }
+    button { font: inherit; }
+    a { color: inherit; }
+    .shell { width: min(1220px, calc(100% - 40px)); margin: 0 auto; }
+
+    .masthead {
+      padding: clamp(42px, 7vw, 88px) 0 30px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .masthead-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(270px, 390px);
+      gap: clamp(28px, 6vw, 76px);
+      align-items: end;
+    }
+    .edition {
+      margin: 0 0 14px;
+      color: var(--teal);
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: .76rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 810px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(2.45rem, 6vw, 5.5rem);
+      line-height: .94;
+      letter-spacing: -.055em;
+      text-wrap: balance;
+    }
+    .subtitle {
+      max-width: 760px;
+      margin: 24px 0 0;
+      font-size: clamp(1.03rem, 2vw, 1.35rem);
+      color: var(--muted);
+    }
+    .source-note {
+      margin: 0;
+      padding: 22px 0 3px 24px;
+      border-left: 2px solid var(--teal);
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    .source-note strong { color: var(--ink); }
+
+    .rule-banner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 30px;
+      padding: 18px 22px;
+      border: 1px solid color-mix(in srgb, var(--rule) 58%, transparent);
+      background: var(--rule-bg);
+      color: var(--rule);
+      box-shadow: var(--shadow);
+    }
+    .rule-mark {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .rule-banner p { margin: 0; font-size: clamp(1rem, 2.2vw, 1.35rem); font-weight: 700; letter-spacing: -.01em; }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 1px;
+      margin: 30px 0 0;
+      border: 1px solid var(--line-strong);
+      background: var(--line-strong);
+      box-shadow: var(--shadow);
+    }
+    .metric { padding: 22px; background: var(--surface); }
+    .metric-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .metric-label { color: var(--muted); font-size: .86rem; font-weight: 600; }
+    .metric-value { color: var(--navy); font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+    .track { height: 6px; margin-top: 17px; overflow: hidden; background: var(--surface-2); }
+    .fill { width: 8.333%; height: 100%; background: var(--green); }
+    .jump-links { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface); }
+    .jump-links a {
+      display: grid;
+      place-items: center;
+      min-width: 104px;
+      padding: 18px;
+      color: var(--navy);
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 700;
+      border-left: 1px solid var(--line);
+    }
+    .jump-links a + a { border-top: 1px solid var(--line); }
+    .jump-links a:hover, .jump-links a:focus-visible { background: var(--surface-2); outline: none; }
+
+    .board-section { padding: 64px 0 18px; scroll-margin-top: 12px; }
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+    .section-index { margin: 0 0 7px; color: var(--teal); font-family: "IBM Plex Mono", monospace; font-size: .76rem; font-weight: 600; }
+    h2 { margin: 0; color: var(--navy); font-size: clamp(1.75rem, 4vw, 3rem); line-height: 1.05; letter-spacing: -.035em; }
+    .section-caption { max-width: 650px; margin: 10px 0 0; color: var(--muted); }
+
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .filter {
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 8px 13px;
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+    .filter[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--bg); }
+    .filter:focus-visible { outline: 3px solid color-mix(in srgb, var(--teal) 38%, transparent); outline-offset: 2px; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .card {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr);
+      min-height: 290px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: 0 4px 16px rgba(17, 38, 32, .035);
+    }
+    .card[hidden] { display: none; }
+    .number-rail {
+      padding: 22px 13px;
+      background: var(--surface-2);
+      border-right: 1px solid var(--line);
+      color: var(--teal);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 1.05rem;
+      font-weight: 600;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+    .card-body { display: flex; flex-direction: column; min-width: 0; padding: 22px; }
+    .card-head { display: flex; gap: 14px; justify-content: space-between; align-items: flex-start; }
+    h3 { margin: 0; color: var(--ink); font-size: 1.22rem; line-height: 1.2; letter-spacing: -.018em; }
+    .badge { flex: 0 0 auto; border-radius: 999px; padding: 5px 9px; font-family: "IBM Plex Mono", monospace; font-size: .66rem; font-weight: 600; letter-spacing: .045em; }
+    .badge.complete { color: var(--green); background: var(--green-bg); }
+    .badge.pending { color: var(--amber); background: var(--amber-bg); }
+    .details { display: grid; gap: 14px; margin: 22px 0 0; }
+    .detail { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; }
+    .detail dt { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: .7rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+    .detail dd { margin: 0; color: var(--ink); font-size: .92rem; }
+    .state-line { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
+    .state-line strong { color: var(--ink); }
+
+    .steps .card { min-height: 255px; }
+    .steps .number-rail { color: var(--amber); }
+    .steps .detail { grid-template-columns: 92px minmax(0, 1fr); }
+
+    .empty-state { display: none; margin: 24px 0 0; padding: 28px; border: 1px dashed var(--line-strong); color: var(--muted); text-align: center; }
+    .empty-state.show { display: block; }
+
+    footer { margin-top: 62px; padding: 25px 0 40px; border-top: 1px solid var(--line-strong); color: var(--muted); font-size: .82rem; }
+    footer strong { color: var(--ink); }
+
+    @media (max-width: 820px) {
+      .shell { width: min(100% - 28px, 680px); }
+      .masthead-grid { grid-template-columns: 1fr; gap: 25px; }
+      .source-note { padding-top: 4px; }
+      .dashboard { grid-template-columns: 1fr 1fr; }
+      .jump-links { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
+      .jump-links a { border-left: 0; border-top: 1px solid var(--line); }
+      .jump-links a + a { border-left: 1px solid var(--line); }
+      .section-head { grid-template-columns: 1fr; align-items: start; }
+      .filters { justify-content: flex-start; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .masthead { padding-top: 32px; }
+      h1 { font-size: clamp(2.25rem, 13.5vw, 3.7rem); }
+      .rule-banner { grid-template-columns: 1fr; gap: 5px; padding: 16px; }
+      .dashboard { grid-template-columns: 1fr; }
+      .metric + .metric { border-top: 1px solid var(--line); }
+      .jump-links { grid-column: auto; }
+      .board-section { padding-top: 52px; }
+      .card { grid-template-columns: 46px minmax(0, 1fr); min-height: 0; }
+      .number-rail { padding: 18px 8px; font-size: .9rem; }
+      .card-body { padding: 18px 16px 19px; }
+      .card-head { display: grid; }
+      .badge { justify-self: start; }
+      .detail, .steps .detail { grid-template-columns: 1fr; gap: 4px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="shell">
+      <div class="masthead-grid">
+        <div>
+          <p class="edition">Evidence control • Snapshot 2026-09-25</p>
+          <h1>Launch Gate Evidence Board</h1>
+          <p class="subtitle">NEXUS IMA — the path from ARCHITECTURE READY to LAUNCH READY</p>
+        </div>
+        <p class="source-note"><strong>Source note.</strong> Gate definitions come only from the frozen NEXUS Master (frozen 2026-09-19). States reflect the user's own reported evidence as of 2026-09-25.</p>
+      </div>
+
+      <div class="rule-banner" role="note" aria-label="Evidence rule">
+        <span class="rule-mark">RULE 01</span>
+        <p>No evidence → no PASS. No verification → no RESOLVED.</p>
+      </div>
+
+      <div class="dashboard" aria-label="Progress summary">
+        <div class="metric">
+          <div class="metric-top"><span class="metric-label">Launch Gates</span><span class="metric-value">0 of 12 complete</span></div>
+          <div class="track" aria-hidden="true"><div class="fill" style="width: 0"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-top"><span class="metric-label">Closure steps</span><span class="metric-value">1 of 12 complete</span></div>
+          <div class="track" aria-hidden="true"><div class="fill"></div></div>
+        </div>
+        <nav class="jump-links" aria-label="Board sections">
+          <a href="#gates">View gates</a>
+          <a href="#steps">View steps</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="board-section" id="gates" aria-labelledby="gates-title">
+      <div class="section-head">
+        <div>
+          <p class="section-index">01 / CONTROL GATES</p>
+          <h2 id="gates-title">The 12 Launch Gates</h2>
+          <p class="section-caption">Each gate names the acceptance threshold, the evidence required to support it, and its current documented state.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filter launch gates">
+          <button class="filter" type="button" data-filter="all" data-target="gates-grid" aria-pressed="true">All 12</button>
+          <button class="filter" type="button" data-filter="complete" data-target="gates-grid" aria-pressed="false">Complete</button>
+          <button class="filter" type="button" data-filter="pending" data-target="gates-grid" aria-pressed="false">Pending</button>
+        </div>
+      </div>
+      <div class="card-grid" id="gates-grid"></div>
+      <div class="empty-state" id="gates-empty">No gates match this filter.</div>
+    </section>
+
+    <section class="board-section steps" id="steps" aria-labelledby="steps-title">
+      <div class="section-head">
+        <div>
+          <p class="section-index">02 / CLOSURE SEQUENCE</p>
+          <h2 id="steps-title">The 12-Step Closure Plan</h2>
+          <p class="section-caption">The ordered work needed to move from the frozen architecture to a verified launch decision.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filter closure steps">
+          <button class="filter" type="button" data-filter="all" data-target="steps-grid" aria-pressed="true">All 12</button>
+          <button class="filter" type="button" data-filter="complete" data-target="steps-grid" aria-pressed="false">Complete</button>
+          <button class="filter" type="button" data-filter="pending" data-target="steps-grid" aria-pressed="false">Pending</button>
+        </div>
+      </div>
+      <div class="card-grid" id="steps-grid"></div>
+      <div class="empty-state" id="steps-empty">No closure steps match this filter.</div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell"><strong>Evidence boundary:</strong> the frozen Master remains read-only; this board reports status and does not alter the Source of Truth.</div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var gates = [
+        { n: 1, name: 'Source of Truth', criteria: 'A consolidated master plus inventory exists as the single reference.', evidence: 'Frozen Master document with recorded SHA-256 hash and a freeze entry in the audit log.', state: 'pending', note: 'Master frozen on 2026-09-19 (SHA-256 recorded, 166,560 bytes). The full environment inventory is closure step 2, still pending.' },
+        { n: 2, name: 'Build', criteria: 'Real components implemented, not only designed.', evidence: 'Implemented components present in repositories.', state: 'pending', note: 'No NEXUS components implemented in the visible workspace (inventory of 2026-09-24).' },
+        { n: 3, name: 'Integration', criteria: 'Real connections working.', evidence: 'Verified working integrations with APIs and providers.', state: 'pending', note: 'PENDING.' },
+        { n: 4, name: 'Security', criteria: 'Identity, permissions, secrets, policies, and risk verified.', evidence: 'Verification records for identity, permissions, secrets handling, policies, and risk review.', state: 'pending', note: 'PENDING.' },
+        { n: 5, name: 'Testing', criteria: 'Unit, integration, failure, retry-limit, rollback/recovery, and end-to-end tests.', evidence: 'Test reports per capability covering all six test types.', state: 'pending', note: 'PENDING.' },
+        { n: 6, name: 'Observability', criteria: 'Full trace REQUEST → RESULT → VERIFY → OUTCOME.', evidence: 'Trace records showing the complete chain for each execution.', state: 'pending', note: 'PENDING.' },
+        { n: 7, name: 'Guardian', criteria: 'Detection, evaluation, action, verification, and recovery demonstrated.', evidence: 'Demonstrated Guardian cycle records.', state: 'pending', note: 'PENDING.' },
+        { n: 8, name: 'Backup/Recovery', criteria: 'Valid backup with tested restore/recovery.', evidence: 'A valid backup artifact plus a restore/recovery test record.', state: 'pending', note: 'PENDING.' },
+        { n: 9, name: 'Deployment', criteria: 'Reproducible deployment with tested rollback.', evidence: 'Deployment procedure plus rollback test record.', state: 'pending', note: 'PENDING.' },
+        { n: 10, name: 'Business', criteria: 'At least one flow produces a measurable result and ROI.', evidence: 'Measured outcome and ROI figures from a real flow.', state: 'pending', note: 'PENDING.' },
+        { n: 11, name: 'Evidence', criteria: 'Every PASS is backed by verifiable evidence.', evidence: 'An evidence archive linking each PASS to its verification.', state: 'pending', note: 'PENDING.' },
+        { n: 12, name: 'Launch', criteria: 'Smoke test, incident runbook, ownership, monitoring, and rollback ready.', evidence: 'Smoke test results, runbooks, ownership assignments, monitoring setup, rollback readiness.', state: 'pending', note: 'PENDING.' }
+      ];
+
+      var steps = [
+        { n: 1, name: 'Freeze this Master as Source of Truth.', state: 'complete', note: 'COMPLETE (2026-09-19). Evidence: frozen Master + recorded hash + audit entry.' },
+        { n: 2, name: 'Inventory repositories, workflows, APIs, accounts/connections, secrets, providers, and environments.', state: 'pending', note: 'PENDING.' },
+        { n: 3, name: 'Convert the 20×maturity matrix into a PASS/FAIL/EVIDENCE board.', state: 'pending', note: 'PENDING.' },
+        { n: 4, name: 'Implement the critical path BRAIN → GOVERNANCE → ACTION CONTRACT → EXECUTION → VERIFY → GUARDIAN → OBSERVABILITY.', state: 'pending', note: 'PENDING.' },
+        { n: 5, name: 'Activate Backup/Recovery and demonstrate restore/recovery.', state: 'pending', note: 'PENDING.' },
+        { n: 6, name: 'Fix failing workflows; stale-discussions needs label/configuration review.', state: 'pending', note: 'PENDING. The 2024-12-24 failure log is archived as evidence of the problem (marked NOT certified); the fix itself is still pending.' },
+        { n: 7, name: 'Run tests per capability and record evidence.', state: 'pending', note: 'PENDING.' },
+        { n: 8, name: 'Run a real end-to-end flow in a controlled environment.', state: 'pending', note: 'PENDING.' },
+        { n: 9, name: 'Repeat it with failure and recovery.', state: 'pending', note: 'PENDING.' },
+        { n: 10, name: 'Measure outcome/ROI.', state: 'pending', note: 'PENDING.' },
+        { n: 11, name: 'Document runbooks, ownership, limits, and launch.', state: 'pending', note: 'PENDING.' },
+        { n: 12, name: 'Run the final Launch Gate and only then declare READY.', state: 'pending', note: 'PENDING.' }
+      ];
+
+      function esc(text) {
+        return String(text).replace(/[&<>'"]/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c];
+        });
+      }
+
+      function gateCard(item) {
+        return '<article class="card" data-state="' + item.state + '">' +
+          '<div class="number-rail">GATE ' + String(item.n).padStart(2, '0') + '</div>' +
+          '<div class="card-body"><div class="card-head"><h3>' + esc(item.name) + '</h3>' +
+          '<span class="badge ' + item.state + '">' + item.state.toUpperCase() + '</span></div>' +
+          '<dl class="details"><div class="detail"><dt>Acceptance</dt><dd>' + esc(item.criteria) + '</dd></div>' +
+          '<div class="detail"><dt>Evidence</dt><dd>' + esc(item.evidence) + '</dd></div></dl>' +
+          '<p class="state-line"><strong>Current state.</strong> ' + esc(item.note) + '</p></div></article>';
+      }
+
+      function stepCard(item) {
+        return '<article class="card" data-state="' + item.state + '">' +
+          '<div class="number-rail">STEP ' + String(item.n).padStart(2, '0') + '</div>' +
+          '<div class="card-body"><div class="card-head"><h3>' + esc(item.name) + '</h3>' +
+          '<span class="badge ' + item.state + '">' + item.state.toUpperCase() + '</span></div>' +
+          '<dl class="details"><div class="detail"><dt>Required action</dt><dd>' + esc(item.name) + '</dd></div></dl>' +
+          '<p class="state-line"><strong>Current state.</strong> ' + esc(item.note) + '</p></div></article>';
+      }
+
+      document.getElementById('gates-grid').innerHTML = gates.map(gateCard).join('');
+      document.getElementById('steps-grid').innerHTML = steps.map(stepCard).join('');
+
+      document.querySelectorAll('.filter').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var target = button.getAttribute('data-target');
+          var filter = button.getAttribute('data-filter');
+          var grid = document.getElementById(target);
+          var group = button.parentElement;
+          var visible = 0;
+
+          group.querySelectorAll('.filter').forEach(function (peer) {
+            peer.setAttribute('aria-pressed', String(peer === button));
+          });
+
+          grid.querySelectorAll('.card').forEach(function (card) {
+            var show = filter === 'all' || card.getAttribute('data-state') === filter;
+            card.hidden = !show;
+            if (show) visible += 1;
+          });
+
+          var empty = document.getElementById(target === 'gates-grid' ? 'gates-empty' : 'steps-empty');
+          empty.classList.toggle('show', visible === 0);
+        });
+      });
+    }());
+  </script>
+</body>
+</html>

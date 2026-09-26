@@ -1,0 +1,33 @@
+﻿2024-12-24T18:09:25.6750988Z ##[debug]Evaluating: secrets.GITHUB_TOKEN
+2024-12-24T18:09:25.6756638Z ##[debug]Evaluating Index:
+2024-12-24T18:09:25.6759133Z ##[debug]..Evaluating secrets:
+2024-12-24T18:09:25.6769639Z ##[debug]..=> Object
+2024-12-24T18:09:25.6778679Z ##[debug]..Evaluating String:
+2024-12-24T18:09:25.6779671Z ##[debug]..=> 'GITHUB_TOKEN'
+2024-12-24T18:09:25.6784291Z ##[debug]=> '***'
+2024-12-24T18:09:25.6787641Z ##[debug]Result: '***'
+2024-12-24T18:09:25.6805585Z ##[debug]Evaluating condition for step: 'Stale discussions action'
+2024-12-24T18:09:25.6826888Z ##[debug]Evaluating: success()
+2024-12-24T18:09:25.6828649Z ##[debug]Evaluating success:
+2024-12-24T18:09:25.6835824Z ##[debug]=> true
+2024-12-24T18:09:25.6838339Z ##[debug]Result: true
+2024-12-24T18:09:25.6853980Z ##[debug]Starting: Stale discussions action
+2024-12-24T18:09:25.6976880Z ##[debug]Loading inputs
+2024-12-24T18:09:25.6990933Z ##[debug]Loading env
+2024-12-24T18:09:25.7056961Z ##[group]Run aws-github-ops/handle-stale-discussions@v1
+2024-12-24T18:09:25.7057951Z with:
+2024-12-24T18:09:25.7058539Z env:
+2024-12-24T18:09:25.7059288Z   GITHUB_TOKEN: ***
+2024-12-24T18:09:25.7059745Z ##[endgroup]
+2024-12-24T18:09:26.2744929Z /home/runner/work/_actions/aws-github-ops/handle-stale-discussions/v1/dist/index.js:63
+2024-12-24T18:09:26.2748125Z                 throw new Error(`Couldn't find label ${attentionLabel} in repository. Please create this label and try again.`);
+2024-12-24T18:09:26.2750345Z                       ^
+2024-12-24T18:09:26.2750912Z 
+2024-12-24T18:09:26.2751986Z Error: Couldn't find label attention in repository. Please create this label and try again.
+2024-12-24T18:09:26.2756799Z     at GithubDiscussionClient.initializeAttentionLabelId (/home/runner/work/_actions/aws-github-ops/handle-stale-discussions/v1/dist/index.js:63:23)
+2024-12-24T18:09:26.2761066Z     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2024-12-24T18:09:26.2764383Z     at async main (/home/runner/work/_actions/aws-github-ops/handle-stale-discussions/v1/dist/index.js:46464:5)
+2024-12-24T18:09:26.2766746Z 
+2024-12-24T18:09:26.2767161Z Node.js v20.18.0
+2024-12-24T18:09:26.2786155Z ##[debug]Node Action run completed with exit code 1
+2024-12-24T18:09:26.2830952Z ##[debug]Finishing: Stale discussions action
